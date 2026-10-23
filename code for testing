@@ -1,0 +1,23 @@
+"""
+This code is used to test the trained SLM and observe its responses to different inputs. 
+It helps verify the model's output behavior and check whether it produces the expected results.
+"""
+
+use "sys"
+use "engine"
+
+ai = create_slm2_engine(512,64,128,0.002)
+load_model("stage2_light_sft.cbxm",ai.model.params)
+ai.tokenizer = tokenizer_load("stage1_light_tok.json")
+
+print(" Model Loaded ")
+
+running = 1 
+while running == 1 do 
+    user = input("User: ")
+    if user == "stop" do 
+        running == 0
+    otherwise do 
+        if length(user) > 0 do 
+            reply = engine2_chat(ai,user)
+            print("\nBot: ",reply)
